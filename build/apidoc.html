@@ -1,0 +1,235 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/kentcdodds/webpack-config-utils#readme"
+
+    >webpack-config-utils (v2.3.0)</a>
+</h1>
+<h4>Utilities to help your webpack config be easier to read</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.webpack-config-utils">module webpack-config-utils</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.webpack-config-utils.combineLoaders">
+            function <span class="apidocSignatureSpan">webpack-config-utils.</span>combineLoaders
+            <span class="apidocSignatureSpan">(loaders)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.webpack-config-utils.getIfUtils">
+            function <span class="apidocSignatureSpan">webpack-config-utils.</span>getIfUtils
+            <span class="apidocSignatureSpan">(env)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.webpack-config-utils.propIf">
+            function <span class="apidocSignatureSpan">webpack-config-utils.</span>propIf
+            <span class="apidocSignatureSpan">(add, value, alternate)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.webpack-config-utils.propIfNot">
+            function <span class="apidocSignatureSpan">webpack-config-utils.</span>propIfNot
+            <span class="apidocSignatureSpan">(add, value, alternate)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.webpack-config-utils.removeEmpty">
+            function <span class="apidocSignatureSpan">webpack-config-utils.</span>removeEmpty
+            <span class="apidocSignatureSpan">(input)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.webpack-config-utils" id="apidoc.module.webpack-config-utils">module webpack-config-utils</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.webpack-config-utils.combineLoaders" id="apidoc.element.webpack-config-utils.combineLoaders">
+        function <span class="apidocSignatureSpan">webpack-config-utils.</span>combineLoaders
+        <span class="apidocSignatureSpan">(loaders)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function combineLoaders(loaders) {
+  return loaders.map(function(loaderEntry) {
+    var query = qs.stringify(loaderEntry.query, { arrayFormat: &#x27;brackets&#x27;, encode: false });
+    if (query) {
+      query = &#x27;?&#x27; + query;
+    }
+    return loaderEntry.loader + query;
+  }).join(&#x27;!&#x27;);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.webpack-config-utils.getIfUtils" id="apidoc.element.webpack-config-utils.getIfUtils">
+        function <span class="apidocSignatureSpan">webpack-config-utils.</span>getIfUtils
+        <span class="apidocSignatureSpan">(env)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function getIfUtils(env) {
+  var vars = arguments.length &#x3e; 1 &#x26;&#x26; arguments[1] !== undefined ? arguments[1] : [&#x27;production&#x27;, &#x27;prod&#x27;, &#x27;test&#x27;, &#x27;development&#x27;, &#x27;
+dev&#x27;];
+
+  env = typeof env === &#x27;string&#x27; ? _defineProperty({}, env, true) : env;
+  if ((typeof env === &#x27;undefined&#x27; ? &#x27;undefined&#x27; : _typeof(env)) !== &#x27;object&#x27;) {
+    throw new Error(&#x27;webpack-config-utils:getIfUtils: env passed should be a string/Object. Was &#x27; + JSON.stringify(env));
+  }
+  return vars.reduce(function (utils, variable) {
+    var envValue = !!env[variable];
+    var capitalVariable = capitalizeWord(variable);
+    utils[&#x27;if&#x27; + capitalVariable] = function (value, alternate) {
+      return isUndefined(value) ? envValue : (0, _propIf.propIf)(envValue, value, alternate);
+    };
+    utils[&#x27;ifNot&#x27; + capitalVariable] = function (value, alternate) {
+      return isUndefined(value) ? !envValue : (0, _propIf.propIfNot)(envValue, value, alternate);
+    };
+    return utils;
+  }, {});
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.webpack-config-utils.propIf" id="apidoc.element.webpack-config-utils.propIf">
+        function <span class="apidocSignatureSpan">webpack-config-utils.</span>propIf
+        <span class="apidocSignatureSpan">(add, value, alternate)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function propIf(add, value, alternate) {
+  return getValue(add) ? value : alternate;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.webpack-config-utils.propIfNot" id="apidoc.element.webpack-config-utils.propIfNot">
+        function <span class="apidocSignatureSpan">webpack-config-utils.</span>propIfNot
+        <span class="apidocSignatureSpan">(add, value, alternate)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function propIfNot(add, value, alternate) {
+  return propIf(add, alternate, value);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.webpack-config-utils.removeEmpty" id="apidoc.element.webpack-config-utils.removeEmpty">
+        function <span class="apidocSignatureSpan">webpack-config-utils.</span>removeEmpty
+        <span class="apidocSignatureSpan">(input)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function removeEmpty(input) {
+  var output = void 0;
+  if (Array.isArray(input)) {
+    output = input.filter(function (item) {
+      return typeof item !== &#x27;undefined&#x27;;
+    });
+  } else {
+    output = {};
+    Object.keys(input).forEach(function (key) {
+      var value = input[key];
+      if (typeof value !== &#x27;undefined&#x27;) {
+        output[key] = value;
+      }
+    });
+  }
+  return output;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
